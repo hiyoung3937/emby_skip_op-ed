@@ -1,5 +1,6 @@
 # Emby OP/ED Skipper
 
+
 Emby Server plugin that skips already-watched opening and ending segments while leaving the first playback untouched per user.
 
 The plugin does not detect OP/ED audio or video by itself. It consumes existing chapter or marker data written by Emby Intro Skip, StrmAssistant, Chapter API, or manual chapter edits.
