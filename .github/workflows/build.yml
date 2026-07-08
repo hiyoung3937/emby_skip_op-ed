@@ -1,0 +1,37 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Copy Emby server reference assemblies
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p emby-server
+          docker pull emby/embyserver:latest
+          container_id="$(docker create emby/embyserver:latest)"
+          trap 'docker rm -f "$container_id" >/dev/null 2>&1 || true' EXIT
+          docker cp "$container_id:/system/MediaBrowser.Common.dll" emby-server/
+          docker cp "$container_id:/system/MediaBrowser.Controller.dll" emby-server/
+          docker cp "$container_id:/system/MediaBrowser.Model.dll" emby-server/
+
+      - name: Restore
+        run: dotnet restore ./Emby.OpEdSkipper.sln
+
+      - name: Build
+        run: dotnet build ./Emby.OpEdSkipper.sln -c Release --no-restore

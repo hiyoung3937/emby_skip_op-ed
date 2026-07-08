@@ -10,21 +10,27 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <EmbyServerPath Condition="'$(EmbyServerPath)' == ''">$(MSBuildProjectDirectory)\..\..\emby-server</EmbyServerPath>
+    <EmbyServerPath Condition="'$(EmbyServerPath)' == ''">$(MSBuildProjectDirectory)/../../emby-server</EmbyServerPath>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="Exists('$(EmbyServerPath)/MediaBrowser.Common.dll') and Exists('$(EmbyServerPath)/MediaBrowser.Controller.dll') and Exists('$(EmbyServerPath)/MediaBrowser.Model.dll')">
     <Reference Include="MediaBrowser.Common">
-      <HintPath>$(EmbyServerPath)\MediaBrowser.Common.dll</HintPath>
+      <HintPath>$(EmbyServerPath)/MediaBrowser.Common.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="MediaBrowser.Controller">
-      <HintPath>$(EmbyServerPath)\MediaBrowser.Controller.dll</HintPath>
+      <HintPath>$(EmbyServerPath)/MediaBrowser.Controller.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="MediaBrowser.Model">
-      <HintPath>$(EmbyServerPath)\MediaBrowser.Model.dll</HintPath>
+      <HintPath>$(EmbyServerPath)/MediaBrowser.Model.dll</HintPath>
       <Private>false</Private>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition="!Exists('$(EmbyServerPath)/MediaBrowser.Common.dll') or !Exists('$(EmbyServerPath)/MediaBrowser.Controller.dll') or !Exists('$(EmbyServerPath)/MediaBrowser.Model.dll')">
+    <ProjectReference Include="..\..\stubs\MediaBrowser.Common\MediaBrowser.Common.csproj" Private="false" AdditionalProperties="Configuration=$(Configuration)" />
+    <ProjectReference Include="..\..\stubs\MediaBrowser.Controller\MediaBrowser.Controller.csproj" Private="false" AdditionalProperties="Configuration=$(Configuration)" />
+    <ProjectReference Include="..\..\stubs\MediaBrowser.Model\MediaBrowser.Model.csproj" Private="false" AdditionalProperties="Configuration=$(Configuration)" />
   </ItemGroup>
 </Project>

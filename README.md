@@ -35,6 +35,14 @@ Alternatively pass the server DLL location directly:
 dotnet build .\Emby.OpEdSkipper.sln -c Release -p:EmbyServerPath=C:\path\to\emby\system
 ```
 
+If the Emby DLLs are not available, the project falls back to minimal local stubs under `stubs/` so the non-Emby logic can still be compiled locally. Do not deploy the stub assemblies; deploy only `Emby.OpEdSkipper.dll` built against your target Emby Server version when preparing a real plugin release.
+
+## GitHub Actions
+
+The project references Emby Server assemblies directly. GitHub runners do not have those DLLs by default, so the workflow in `.github/workflows/build.yml` pulls `emby/embyserver:latest` and copies the required reference assemblies from `/system` into `emby-server/` before building.
+
+If you need to pin CI to the exact Emby version running on your NAS, replace `emby/embyserver:latest` in the workflow with that Docker image tag.
+
 Copy `src\Emby.OpEdSkipper\bin\Release\net8.0\Emby.OpEdSkipper.dll` into the Emby config plugin directory and restart Emby.
 
 For Docker this is usually the host folder mounted to `/config/plugins`.

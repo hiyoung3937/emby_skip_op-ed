@@ -1,8 +1,16 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emby.OpEdSkipper", "src\Emby.OpEdSkipper\Emby.OpEdSkipper.csproj", "{C8D08B4A-656A-409C-82A8-A522EC0A6F86}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stubs", "stubs", "{76CF6927-914B-4525-9193-C390651A17BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaBrowser.Model", "stubs\MediaBrowser.Model\MediaBrowser.Model.csproj", "{6A6E5923-80D3-41D5-BF2E-1A6C3EBCBE2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaBrowser.Common", "stubs\MediaBrowser.Common\MediaBrowser.Common.csproj", "{4B5A74B3-1D93-499E-AAA6-89DC49044FF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaBrowser.Controller", "stubs\MediaBrowser.Controller\MediaBrowser.Controller.csproj", "{E819F9F1-DC77-4BEB-999D-646E3BC9806F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,5 +22,22 @@ Global
 		{C8D08B4A-656A-409C-82A8-A522EC0A6F86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8D08B4A-656A-409C-82A8-A522EC0A6F86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8D08B4A-656A-409C-82A8-A522EC0A6F86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A6E5923-80D3-41D5-BF2E-1A6C3EBCBE2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A6E5923-80D3-41D5-BF2E-1A6C3EBCBE2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A6E5923-80D3-41D5-BF2E-1A6C3EBCBE2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A6E5923-80D3-41D5-BF2E-1A6C3EBCBE2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B5A74B3-1D93-499E-AAA6-89DC49044FF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B5A74B3-1D93-499E-AAA6-89DC49044FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B5A74B3-1D93-499E-AAA6-89DC49044FF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B5A74B3-1D93-499E-AAA6-89DC49044FF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E819F9F1-DC77-4BEB-999D-646E3BC9806F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E819F9F1-DC77-4BEB-999D-646E3BC9806F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E819F9F1-DC77-4BEB-999D-646E3BC9806F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E819F9F1-DC77-4BEB-999D-646E3BC9806F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6A6E5923-80D3-41D5-BF2E-1A6C3EBCBE2C} = {76CF6927-914B-4525-9193-C390651A17BC}
+		{4B5A74B3-1D93-499E-AAA6-89DC49044FF8} = {76CF6927-914B-4525-9193-C390651A17BC}
+		{E819F9F1-DC77-4BEB-999D-646E3BC9806F} = {76CF6927-914B-4525-9193-C390651A17BC}
 	EndGlobalSection
 EndGlobal
