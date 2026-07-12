@@ -1,3 +1,6 @@
+# 暂不可用
+
+
 # Emby OP/ED Skipper
 
 Emby Server plugin that skips already-watched opening and ending segments while leaving the first playback untouched per user.

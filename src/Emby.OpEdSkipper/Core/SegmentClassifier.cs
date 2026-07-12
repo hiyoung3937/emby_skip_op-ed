@@ -33,9 +33,9 @@ public static partial class SegmentClassifier
     [GeneratedRegex(@"\s+")]
     private static partial Regex WhitespaceRegex();
 
-    [GeneratedRegex(@"(^|\s)(opening|intro|op|片头|オープニング)(\s|$)", RegexOptions.IgnoreCase)]
+    [GeneratedRegex(@"(^|[^\p{L}\p{N}])(opening|intro|op|op\d+|\u7247\u5934|\u7247\u982d|\u30aa\u30fc\u30d7\u30cb\u30f3\u30b0)([^\p{L}\p{N}]|$)", RegexOptions.IgnoreCase)]
     private static partial Regex OpeningRegex();
 
-    [GeneratedRegex(@"(^|\s)(ending|outro|ed|片尾|エンディング)(\s|$)", RegexOptions.IgnoreCase)]
+    [GeneratedRegex(@"(^|[^\p{L}\p{N}])(ending|outro|ed|ed\d+|credits?|end credits|\u7247\u5c3e|\u7247\u5c3e\u66f2|\u30a8\u30f3\u30c7\u30a3\u30f3\u30b0)([^\p{L}\p{N}]|$)", RegexOptions.IgnoreCase)]
     private static partial Regex EndingRegex();
 }

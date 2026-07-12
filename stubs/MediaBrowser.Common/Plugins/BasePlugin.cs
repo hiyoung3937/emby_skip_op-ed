@@ -4,10 +4,10 @@ using MediaBrowser.Model.Serialization;
 
 namespace MediaBrowser.Common.Plugins;
 
-public abstract class BasePluginSimpleUI<TConfiguration>
+public abstract class BasePlugin<TConfiguration>
     where TConfiguration : BasePluginConfiguration, new()
 {
-    protected BasePluginSimpleUI(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer)
+    protected BasePlugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer)
     {
         Configuration = new TConfiguration();
     }

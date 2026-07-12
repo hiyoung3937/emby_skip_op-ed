@@ -1,0 +1,184 @@
+<div id="opedSkipperConfigPage" data-role="page" class="page type-interior pluginConfigurationPage opedSkipperPage">
+    <style>
+        .opedSkipperPage {
+            background: #101010;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .opedSkipperPage .opedSkipperContent {
+            box-sizing: border-box;
+            max-width: 720px;
+            padding: 3.5em 3.5em 4em;
+        }
+
+        .opedSkipperPage .checkboxContainer,
+        .opedSkipperPage .inputContainer {
+            margin: 0 0 1.6em;
+        }
+
+        .opedSkipperPage .fieldDescription {
+            opacity: .78;
+            line-height: 1.45;
+            margin-top: .35em;
+        }
+
+        .opedSkipperPage .opedSkipperSaveButton {
+            margin-top: 1.2em;
+            max-width: 420px;
+        }
+
+        @media (max-width: 720px) {
+            .opedSkipperPage .opedSkipperContent {
+                padding: 2em 1.25em 3em;
+            }
+        }
+    </style>
+
+    <div data-role="content">
+        <div class="content-primary opedSkipperContent">
+            <form id="opedSkipperConfigForm">
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label>
+                        <input is="emby-checkbox" type="checkbox" id="opedEnabled" />
+                        <span>Enable OP/ED Skipper</span>
+                    </label>
+                    <div class="fieldDescription">Master switch for automatic opening and ending skips.</div>
+                </div>
+
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label>
+                        <input is="emby-checkbox" type="checkbox" id="opedSkipOpenings" />
+                        <span>Skip openings</span>
+                    </label>
+                    <div class="fieldDescription">Automatically skip opening, intro, and OP segments after they have been watched once.</div>
+                </div>
+
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label>
+                        <input is="emby-checkbox" type="checkbox" id="opedSkipEndings" />
+                        <span>Skip endings</span>
+                    </label>
+                    <div class="fieldDescription">Automatically skip ending, outro, ED, and credits segments after they have been watched once.</div>
+                </div>
+
+                <div class="inputContainer">
+                    <label class="inputLabel inputLabelUnfocused" for="opedMinimumSegmentSeconds">Minimum segment duration</label>
+                    <input is="emby-input" id="opedMinimumSegmentSeconds" type="number" min="1" max="600" step="1" />
+                    <div class="fieldDescription">Segments shorter than this many seconds are ignored.</div>
+                </div>
+
+                <div class="inputContainer">
+                    <label class="inputLabel inputLabelUnfocused" for="opedSeenThresholdRatio">Seen threshold ratio</label>
+                    <input is="emby-input" id="opedSeenThresholdRatio" type="number" min="0.1" max="1" step="0.05" />
+                    <div class="fieldDescription">A segment is marked watched after playback reaches this fraction of its duration.</div>
+                </div>
+
+                <div class="inputContainer">
+                    <label class="inputLabel inputLabelUnfocused" for="opedSeekPastSegmentMilliseconds">Seek past segment</label>
+                    <input is="emby-input" id="opedSeekPastSegmentMilliseconds" type="number" min="0" max="5000" step="50" />
+                    <div class="fieldDescription">Milliseconds to seek past the segment end.</div>
+                </div>
+
+                <button is="emby-button" type="submit" class="raised button-submit block opedSkipperSaveButton">
+                    <span>Save</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        (function () {
+            var pluginId = "4f9b03b2-3fa2-4b3f-8f27-cd5126a5f3cc";
+            var page = document.querySelector("#opedSkipperConfigPage");
+            var form = document.querySelector("#opedSkipperConfigForm");
+            var loaded = false;
+
+            function setLoading(isLoading) {
+                if (!window.Dashboard) {
+                    return;
+                }
+
+                if (isLoading && Dashboard.showLoadingMsg) {
+                    Dashboard.showLoadingMsg();
+                } else if (!isLoading && Dashboard.hideLoadingMsg) {
+                    Dashboard.hideLoadingMsg();
+                }
+            }
+
+            function showError(error) {
+                setLoading(false);
+                var message = error && error.message ? error.message : "Unable to save OP/ED Skipper settings.";
+                if (window.Dashboard && Dashboard.alert) {
+                    Dashboard.alert(message);
+                } else {
+                    alert(message);
+                }
+            }
+
+            function numberOrDefault(selector, fallback) {
+                var value = parseFloat(page.querySelector(selector).value);
+                return Number.isFinite(value) ? value : fallback;
+            }
+
+            function integerOrDefault(selector, fallback) {
+                var value = parseInt(page.querySelector(selector).value, 10);
+                return Number.isFinite(value) ? value : fallback;
+            }
+
+            function fillForm(config) {
+                page.querySelector("#opedEnabled").checked = config.Enabled !== false;
+                page.querySelector("#opedSkipOpenings").checked = config.SkipOpenings !== false;
+                page.querySelector("#opedSkipEndings").checked = config.SkipEndings !== false;
+                page.querySelector("#opedMinimumSegmentSeconds").value = config.MinimumSegmentSeconds || 10;
+                page.querySelector("#opedSeenThresholdRatio").value = config.SeenThresholdRatio || 0.7;
+                page.querySelector("#opedSeekPastSegmentMilliseconds").value = config.SeekPastSegmentMilliseconds || 250;
+            }
+
+            function loadConfig() {
+                if (!window.ApiClient || !ApiClient.getPluginConfiguration) {
+                    return;
+                }
+
+                setLoading(true);
+                ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                    fillForm(config || {});
+                    loaded = true;
+                    setLoading(false);
+                }).catch(showError);
+            }
+
+            function saveConfig(event) {
+                event.preventDefault();
+                setLoading(true);
+
+                ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                    config = config || {};
+                    config.Enabled = page.querySelector("#opedEnabled").checked;
+                    config.SkipOpenings = page.querySelector("#opedSkipOpenings").checked;
+                    config.SkipEndings = page.querySelector("#opedSkipEndings").checked;
+                    config.MinimumSegmentSeconds = integerOrDefault("#opedMinimumSegmentSeconds", 10);
+                    config.SeenThresholdRatio = numberOrDefault("#opedSeenThresholdRatio", 0.7);
+                    config.SeekPastSegmentMilliseconds = integerOrDefault("#opedSeekPastSegmentMilliseconds", 250);
+
+                    return ApiClient.updatePluginConfiguration(pluginId, config);
+                }).then(function () {
+                    setLoading(false);
+                    if (window.Dashboard && Dashboard.processPluginConfigurationUpdateResult) {
+                        Dashboard.processPluginConfigurationUpdateResult();
+                    }
+                }).catch(showError);
+
+                return false;
+            }
+
+            page.addEventListener("pageshow", loadConfig);
+            page.addEventListener("viewshow", loadConfig);
+            form.addEventListener("submit", saveConfig);
+
+            if (!loaded) {
+                loadConfig();
+            }
+        })();
+    </script>
+</div>

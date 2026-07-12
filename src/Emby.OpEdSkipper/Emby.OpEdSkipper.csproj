@@ -13,6 +13,10 @@
     <EmbyServerPath Condition="'$(EmbyServerPath)' == ''">$(MSBuildProjectDirectory)/../../emby-server</EmbyServerPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="Configuration\configPage.html" />
+  </ItemGroup>
+
   <ItemGroup Condition="Exists('$(EmbyServerPath)/MediaBrowser.Common.dll') and Exists('$(EmbyServerPath)/MediaBrowser.Controller.dll') and Exists('$(EmbyServerPath)/MediaBrowser.Model.dll')">
     <Reference Include="MediaBrowser.Common">
       <HintPath>$(EmbyServerPath)/MediaBrowser.Common.dll</HintPath>
